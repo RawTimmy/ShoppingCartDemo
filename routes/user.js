@@ -22,7 +22,7 @@ router.get('/profile', isLoggedIn, function(req, res, next){
       cart = new Cart(order.cart);
       order.items = cart.generateArray();
     });
-    res.render('user/profile', { orders: order });
+    res.render('user/profile', { orders: orders });
   });
 });
 
@@ -76,10 +76,18 @@ router.post('/signin', passport.authenticate('local.signin',{
   if(req.session.oldUrl){
     var oldUrl = req.session.oldUrl;
     req.session.oldUrl = null;
-    res.redirect(oldurl);
+    res.redirect(oldUrl);
   }else{
     res.redirect('/user/profile');
   }
+});
+
+// Set up "help" router
+router.get('/help', function(req, res, next){
+  var messages = req.flash('error');
+  res.render('user/help',{
+    title: "Help Page"
+  });
 });
 
 module.exports = router;
